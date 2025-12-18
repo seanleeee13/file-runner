@@ -1,0 +1,55 @@
+{
+  "name": "file-runner",
+  "displayName": "File Runner",
+  "description": "run various files",
+  "version": "0.0.7",
+  "engines": {
+    "vscode": "^1.106.1"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "file-runner.runFile",
+        "title": "Run File"
+      },
+      {
+        "command": "file-runner.runFile-icon",
+        "title": "Run File",
+        "icon": "$(run)"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "file-runner.runFile-icon",
+            "group": "navigation",
+            "when": "resourceExtname == .c || resourceExtname == .cpp || resourceExtname == .exe || resourceExtname == .bat || resourceExtname == .js || resourceExtname == .ts || resourceExtname == .rb",
+            "title": "Run File"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.106.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.48.1",
+    "eslint": "^9.39.1",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
