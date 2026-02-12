@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
+import * as os from "os";
 import { fileURLToPath } from "url";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -24,6 +25,11 @@ export function activate(context: vscode.ExtensionContext) {
             const base = filePath.replace(ext, "");
             let compileCmd = "";
             let runCmd = "";
+            if (ext === ".cpp" || ext === ".c" || ext === ".ts") {
+                const runDir = fs.mkdtempSync(path.join(os.tmpdir(), "vscode-cpp-" + 
+Math.random().toString(36).substring(2, 7))
+                );
+            } // 여기부터
             if (ext === ".cpp") {
                 runCmd = base + ".exe";
                 compileCmd = `g++ "${filePath}" -o "${runCmd}"`;
@@ -77,8 +83,47 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }
     );
+    const autoInsert = vscode.workspace.onDidOpenTextDocument(
+        async (doc) => {
+            await vscode.window.showInformationMessage(doc.languageId + " " + String(doc.version))
+            if (path.extname(doc.fileName).toLowerCase() === ".cpp" && doc.version === 1) {
+                if (fs.existsSync("defaults/default.cpp")) {
+                    fs.readFile("defaults/default.cpp", "utf-8", async (err, data) => {
+                        if (err) {
+                            vscode.window.showErrorMessage("An error occured");
+                            return;
+                        }
+                        fs.writeFile(doc.fileName, data, (err) => {
+                            if (err) {
+                                vscode.window.showErrorMessage("An error occured");
+                                return;
+                            }
+                        });
+                    })
+                } else {
+                    console.log("ok");
+                    const cppDefault = `#include <bits/stdc++.h>
+
+using namespace std;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    $0
+}`;
+                    fs.writeFile(doc.fileName, cppDefault, (err) => {
+                        if (err) {
+                            vscode.window.showErrorMessage("An error occured");
+                            return;
+                        }
+                    });
+                }
+            }
+        }
+    );
     context.subscriptions.push(runCommand);
 	context.subscriptions.push(vscode.commands.registerCommand('file-runner.runFile-icon', () => {
         vscode.commands.executeCommand('file-runner.runFile');
     }));
+    context.subscriptions.push(autoInsert);
 }
