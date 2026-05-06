@@ -24,3 +24,7 @@
 ## 0.0.7
 
 - ruby runner
+
+## 0.0.8
+
+- rust runner (also cargo)
