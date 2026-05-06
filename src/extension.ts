@@ -89,7 +89,7 @@ Math.random().toString(36).substring(2, 7))
                 (t) => t.name === "File Runner"
             );
             if (!terminal) {
-                terminal = vscode.window.createTerminal("File Runner", "cmd /k");
+                terminal = vscode.window.createTerminal("File Runner", "cmd");
             }
             terminal.show();
             if (ext === ".cpp" || ext === ".c" || ext === ".rs") {
@@ -143,7 +143,7 @@ Math.random().toString(36).substring(2, 7))
                 (t) => t.name === "File Runner"
             );
             if (!terminal) {
-                terminal = vscode.window.createTerminal("File Runner", "cmd /k");
+                terminal = vscode.window.createTerminal("File Runner", "cmd");
             }
             terminal.show();
             terminal.sendText(runCmd);
@@ -197,5 +197,5 @@ int main() {
 	context.subscriptions.push(vscode.commands.registerCommand('file-runner.runRustFileCargo-icon', () => {
         vscode.commands.executeCommand('file-runner.runRustFileCargo');
     }));
-    context.subscriptions.push(autoInsert);
+    // context.subscriptions.push(autoInsert);
 }
