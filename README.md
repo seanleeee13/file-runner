@@ -11,4 +11,4 @@ Adds run button for various files.
 - Batch (>=0.0.5)
 - js, ts (>=0.0.6) - node, tsc
 - ruby (>=0.0.7) - ruby
-- updating...
+- rust (>=0.0.8) - rustc, cargo

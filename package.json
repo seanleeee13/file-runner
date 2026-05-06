@@ -9,7 +9,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -21,15 +23,30 @@
         "command": "file-runner.runFile-icon",
         "title": "Run File",
         "icon": "$(run)"
+      },
+      {
+        "command": "file-runner.runRustFileCargo",
+        "title": "Run Rust File with Cargo"
+      },
+      {
+        "command": "file-runner.runRustFileCargo-icon",
+        "title": "Run Rust File with Cargo",
+        "icon": "$(package)"
       }
     ],
     "menus": {
-      "editor/title/run": [
+      "editor/title": [
         {
           "command": "file-runner.runFile-icon",
-            "group": "navigation",
-            "when": "resourceExtname == .c || resourceExtname == .cpp || resourceExtname == .exe || resourceExtname == .bat || resourceExtname == .js || resourceExtname == .ts || resourceExtname == .rb",
-            "title": "Run File"
+          "group": "navigation",
+          "when": "resourceExtname == .c || resourceExtname == .cpp || resourceExtname == .exe || resourceExtname == .bat || resourceExtname == .js || resourceExtname == .ts || resourceExtname == .rb || resourceExtname == .rs",
+          "title": "Run File"
+        },
+        {
+          "command": "file-runner.runRustFileCargo-icon",
+          "group": "navigation",
+          "when": "resourceExtname == .rs && hasCargoToml",
+          "title": "Run Rust File with Cargo"
         }
       ]
     }
@@ -43,13 +60,13 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.106.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "typescript-eslint": "^8.48.1",
+    "@types/vscode": "^1.106.1",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
     "eslint": "^9.39.1",
     "typescript": "^5.9.3",
-    "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2"
+    "typescript-eslint": "^8.48.1"
   }
 }
