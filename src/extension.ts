@@ -148,7 +148,7 @@ Math.random().toString(36).substring(2, 7))
     );
     vscode.workspace.onDidOpenTextDocument(
         async (doc) => {
-            if (path.extname(doc.fileName).toLowerCase() === ".rs" && doc.version === 1) {
+            if (path.extname(doc.fileName).toLowerCase() === ".rs" && doc.version === 1 && doc.getText().trim().length === 0) {
                 const folders = vscode.workspace.workspaceFolders;
                 if (!folders) return;
                 const rootPath = folders[0].uri.fsPath;
@@ -177,7 +177,7 @@ Math.random().toString(36).substring(2, 7))
                         }
                     });
                 }
-            } else if (path.extname(doc.fileName).toLowerCase() === ".cpp" && doc.version === 1) {
+            } else if (path.extname(doc.fileName).toLowerCase() === ".cpp" && doc.version === 1 && doc.getText().trim().length === 0) {
                 const folders = vscode.workspace.workspaceFolders;
                 if (!folders) return;
                 const rootPath = folders[0].uri.fsPath;
@@ -212,7 +212,7 @@ int main() {
                         }
                     });
                 }
-            } else {
+            } else if (doc.version === 1 && doc.getText().trim().length === 0) {
                 const folders = vscode.workspace.workspaceFolders;
                 if (!folders) return;
                 const rootPath = folders[0].uri.fsPath;
