@@ -28,3 +28,7 @@
 ## 0.0.8
 
 - rust runner (also cargo)
+
+## 0.0.9
+
+- auto insert

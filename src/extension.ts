@@ -8,12 +8,9 @@ function updateCargoContext() {
     const folders = vscode.workspace.workspaceFolders;
     let hasCargo = false;
     if (folders) {
-        for (const folder of folders) {
-            const cargoPath = path.join(folder.uri.fsPath, 'Cargo.toml');
-            if (fs.existsSync(cargoPath)) {
-                hasCargo = true;
-                break;
-            }
+        const cargoPath = path.join(folders[0].uri.fsPath, 'Cargo.toml');
+        if (fs.existsSync(cargoPath)) {
+            hasCargo = true;
         }
     }
     vscode.commands.executeCommand('setContext', 'hasCargoToml', hasCargo);
@@ -149,12 +146,15 @@ Math.random().toString(36).substring(2, 7))
             terminal.sendText(runCmd);
         }
     );
-    const autoInsert = vscode.workspace.onDidOpenTextDocument(
+    vscode.workspace.onDidOpenTextDocument(
         async (doc) => {
-            // await vscode.window.showInformationMessage(doc.languageId + " " + String(doc.version))
-            if (path.extname(doc.fileName).toLowerCase() === ".cpp" && doc.version === 1) {
-                if (fs.existsSync("defaults/default.cpp")) {
-                    fs.readFile("defaults/default.cpp", "utf-8", async (err, data) => {
+            if (path.extname(doc.fileName).toLowerCase() === ".rs" && doc.version === 1) {
+                const folders = vscode.workspace.workspaceFolders;
+                if (!folders) return;
+                const rootPath = folders[0].uri.fsPath;
+                const defaultPath = path.join(rootPath, 'defaults', 'default.rs');
+                if (fs.existsSync(defaultPath)) {
+                    fs.readFile(defaultPath, "utf-8", async (err, data) => {
                         if (err) {
                             vscode.window.showErrorMessage("An error occured");
                             return;
@@ -167,7 +167,35 @@ Math.random().toString(36).substring(2, 7))
                         });
                     })
                 } else {
-                    // console.log("ok");
+                    const rustDefault = `fn main() {
+    
+}`;
+                    fs.writeFile(doc.fileName, rustDefault, (err) => {
+                        if (err) {
+                            vscode.window.showErrorMessage("An error occured");
+                            return;
+                        }
+                    });
+                }
+            } else if (path.extname(doc.fileName).toLowerCase() === ".cpp" && doc.version === 1) {
+                const folders = vscode.workspace.workspaceFolders;
+                if (!folders) return;
+                const rootPath = folders[0].uri.fsPath;
+                const defaultPath = path.join(rootPath, 'defaults', 'default.cpp');
+                if (fs.existsSync(defaultPath)) {
+                    fs.readFile(defaultPath, "utf-8", async (err, data) => {
+                        if (err) {
+                            vscode.window.showErrorMessage("An error occured");
+                            return;
+                        }
+                        fs.writeFile(doc.fileName, data, (err) => {
+                            if (err) {
+                                vscode.window.showErrorMessage("An error occured");
+                                return;
+                            }
+                        });
+                    })
+                } else {
                     const cppDefault = `#include <bits/stdc++.h>
 
 using namespace std;
@@ -175,7 +203,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    $0
+    
 }`;
                     fs.writeFile(doc.fileName, cppDefault, (err) => {
                         if (err) {
@@ -183,6 +211,25 @@ int main() {
                             return;
                         }
                     });
+                }
+            } else {
+                const folders = vscode.workspace.workspaceFolders;
+                if (!folders) return;
+                const rootPath = folders[0].uri.fsPath;
+                const defaultPath = path.join(rootPath, 'defaults', `default${path.extname(doc.fileName)}`);
+                if (fs.existsSync(defaultPath)) {
+                    fs.readFile(defaultPath, "utf-8", async (err, data) => {
+                        if (err) {
+                            vscode.window.showErrorMessage("An error occured");
+                            return;
+                        }
+                        fs.writeFile(doc.fileName, data, (err) => {
+                            if (err) {
+                                vscode.window.showErrorMessage("An error occured");
+                                return;
+                            }
+                        });
+                    })
                 }
             }
         }
@@ -197,5 +244,4 @@ int main() {
 	context.subscriptions.push(vscode.commands.registerCommand('file-runner.runRustFileCargo-icon', () => {
         vscode.commands.executeCommand('file-runner.runRustFileCargo');
     }));
-    // context.subscriptions.push(autoInsert);
 }
