@@ -151,7 +151,7 @@ Math.random().toString(36).substring(2, 7))
     );
     const autoInsert = vscode.workspace.onDidOpenTextDocument(
         async (doc) => {
-            await vscode.window.showInformationMessage(doc.languageId + " " + String(doc.version))
+            // await vscode.window.showInformationMessage(doc.languageId + " " + String(doc.version))
             if (path.extname(doc.fileName).toLowerCase() === ".cpp" && doc.version === 1) {
                 if (fs.existsSync("defaults/default.cpp")) {
                     fs.readFile("defaults/default.cpp", "utf-8", async (err, data) => {
@@ -167,7 +167,7 @@ Math.random().toString(36).substring(2, 7))
                         });
                     })
                 } else {
-                    console.log("ok");
+                    // console.log("ok");
                     const cppDefault = `#include <bits/stdc++.h>
 
 using namespace std;
