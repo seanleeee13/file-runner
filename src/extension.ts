@@ -124,8 +124,8 @@ Math.random().toString(36).substring(2, 7))
             const cargoTomlPath = path.join(rootPath, 'Cargo.toml');
             const isCargoProject = fs.existsSync(cargoTomlPath);
             const relativePath = path.relative(rootPath, filePath);
-            const isInSrc = relativePath.startsWith('src');
-            const isInBin = relativePath.startsWith('src' + path.sep + 'bin');
+            const isInSrc = relativePath.includes('src');
+            const isInBin = relativePath.includes('src' + path.sep + 'bin');
             let runCmd = "";
             if (ext !== ".rs" || !isCargoProject || !isInSrc || (!isInBin && relativePath !== 'src' + path.sep + 'main.rs')) {
                 vscode.window.showErrorMessage("Not an available file / folder.");
