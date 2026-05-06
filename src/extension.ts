@@ -152,7 +152,7 @@ Math.random().toString(36).substring(2, 7))
                 const folders = vscode.workspace.workspaceFolders;
                 if (!folders) return;
                 const rootPath = folders[0].uri.fsPath;
-                const defaultPath = path.join(rootPath, 'defaults', 'default.rs');
+                const defaultPath = path.join(rootPath, '.defaults', 'default.rs');
                 if (fs.existsSync(defaultPath)) {
                     fs.readFile(defaultPath, "utf-8", async (err, data) => {
                         if (err) {
@@ -181,7 +181,7 @@ Math.random().toString(36).substring(2, 7))
                 const folders = vscode.workspace.workspaceFolders;
                 if (!folders) return;
                 const rootPath = folders[0].uri.fsPath;
-                const defaultPath = path.join(rootPath, 'defaults', 'default.cpp');
+                const defaultPath = path.join(rootPath, '.defaults', 'default.cpp');
                 if (fs.existsSync(defaultPath)) {
                     fs.readFile(defaultPath, "utf-8", async (err, data) => {
                         if (err) {
@@ -216,7 +216,7 @@ int main() {
                 const folders = vscode.workspace.workspaceFolders;
                 if (!folders) return;
                 const rootPath = folders[0].uri.fsPath;
-                const defaultPath = path.join(rootPath, 'defaults', `default${path.extname(doc.fileName)}`);
+                const defaultPath = path.join(rootPath, '.defaults', `default${path.extname(doc.fileName)}`);
                 if (fs.existsSync(defaultPath)) {
                     fs.readFile(defaultPath, "utf-8", async (err, data) => {
                         if (err) {
