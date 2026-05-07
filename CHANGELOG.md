@@ -32,3 +32,7 @@
 ## 0.0.9
 
 - auto insert
+
+## 0.0.901
+
+- fixed cargo error
